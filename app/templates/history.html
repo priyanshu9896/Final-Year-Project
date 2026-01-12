@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview History</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 2rem;
+        }
+        .history-table th, .history-table td {
+            border: 1px solid #eee;
+            padding: 0.75rem 1rem;
+            text-align: left;
+        }
+        .history-table th {
+            background: #f7f7f7;
+        }
+        .history-table tr:hover {
+            background: #f0f8ff;
+        }
+        .history-empty {
+            margin-top: 2rem;
+            color: #888;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+    <navbar>
+        <div class="logo">Interview Platform</div>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/interview">Interview</a>
+            <a href="/history">History</a>
+            <a href="/settings">Settings</a>
+        </div>
+    </navbar>
+    <div class="container">
+        <h2>Your Interview History</h2>
+        <div id="history-list"></div>
+    </div>
+    <script>
+    fetch('/api/v1/history').then(r=>r.json()).then(data=>{
+      const list = document.getElementById('history-list');
+      if(data.length===0){
+        list.innerHTML='<div class="history-empty">No interviews found.</div>';
+        return;
+      }
+      let html = '<table class="history-table"><tr><th>Date</th><th>Type</th><th>Job Description</th><th>Action</th></tr>';
+      html += data.map(i=>`<tr>
+        <td>${new Date(i.created_at).toLocaleString()}</td>
+        <td>${i.interview_type||'N/A'}</td>
+        <td>${(i.job_description||'').slice(0,60)}${(i.job_description||'').length>60?'...':''}</td>
+        <td><a href="/interview/${i.interview_identifier}" style="color:#007bff;">View</a></td>
+      </tr>`).join('');
+      html += '</table>';
+      list.innerHTML = html;
+    });
+    </script>
+</body>
+</html>

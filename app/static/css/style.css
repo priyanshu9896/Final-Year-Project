@@ -1,0 +1,396 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background-color: rgb(249 250 251 / .5);
+  color: #000;
+}
+
+navbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #FFF;
+  padding: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  color: #000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+navbar .nav-links {
+  display: flex;
+  gap: 5px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  list-style: none;
+}
+
+navbar .nav-links a {
+  text-decoration: none;
+  color: #333;
+  padding: 10px;
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
+  display: flex;
+  gap: 5px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+}
+
+navbar .nav-links a:hover {
+  background-color: rgb(20 184 166 / 0.6);
+}
+
+navbar .nav-links a svg {
+  width: 20px;
+  height: 20px;
+  fill: #333;
+  transition: fill 0.3s ease;
+}
+
+
+navbar .nav-links .divider-vertical {
+  width: 1px;
+  height: 35px;
+  background-color: #ccc;
+  border-left: 1px solid #ccc;
+}
+
+navbar .nav-links .profile a img {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}
+
+navbar .nav-links .profile a:hover {
+  background-color: #FFF;
+  color: rgb(20 184 166 / 0.6);
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  width: 100%;
+}
+
+.container .hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.container .hero h1 {
+  font-size: 2.2rem;
+  margin-bottom: 10px;
+  max-width: 700px;
+  font-weight: 600;
+}
+
+.container .hero p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  color: #555;
+  text-align: center;
+  max-width: 800px;
+  font-weight: 400;
+}
+
+.ready-to-start {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  text-align: left;
+  padding: 20px;
+  background-color: rgb(20 184 166 / 0.9);
+  border-radius: 10px;
+  width: 100%;
+  max-width: 850px;
+  color: #FFF;
+  height: 280px;
+  margin-top: 20px;
+}
+
+.ready-to-start .content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.outer-circle {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  position: relative;
+  /* Needed for absolute positioning of inner circles */
+  background-color: #eee;
+  /* Example background color */
+}
+
+.inner-circle-1 {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ddd;
+  /* Example background color */
+}
+
+.inner-circle-2 {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ccc;
+}
+
+.ready-to-start .image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.ready-to-start h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+.ready-to-start .content p {
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+  color: #FFF;
+  text-align: left;
+}
+.ready-to-start .content .cta-button {
+  background-color: #FFF;
+  color: rgb(20 184 166 / 0.9);
+  padding: 10px 15px;
+  border-radius: 7px;
+  text-decoration: none;
+  font-size: 1.2rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  display: flex;
+  gap: 5px;
+  flex-direction: row;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.ready-to-start .cta-button svg {
+  width: 24px;
+  height: 24px;
+  fill: rgb(20 184 166 / 0.9);
+  transition: fill 0.3s ease;
+}
+
+.interview-type {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  text-align: center;
+  padding: 20px;
+  background-color: #FFF;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 850px;
+  margin-top: 20px;
+}
+
+.interview-types h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+
+.interview-options {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0px;
+  background-color: #FFF;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 850px;
+  margin-top: 20px;
+  gap: 20px;
+}
+
+.interview-options .option {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  text-align: center;
+  padding: 20px;
+  background-color: #FFF;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 250px;
+  margin-top: 20px;
+  height: 250px;
+  position: relative;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.interview-options .option .icon-container {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  background-color: rgb(20 184 166 / 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.interview-options .option .icon-container svg {
+  width: 30px;
+  height: 30px;
+  fill: rgb(20 184 166)
+}
+
+.interview-options .option:hover {
+  transform: translateY(-5px);
+}
+
+.interview-options .option .time-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #EEE;
+  color: #333;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 0.8rem;
+}
+
+.interview-options .option h3 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  font-weight: 600;
+}
+
+.interview-options .option p {
+  text-align: left;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.tag-badge {
+  background-color: #CCC;
+  color: #333;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  margin-right: 5px;
+  position: absolute;
+ bottom: 20px;
+  left: 20px;
+}
+
+
+.other-actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  background-color: #FFF;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 850px;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.other-actions .action {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  background-color: #FFF;
+  border-radius: 10px;
+  width: 100%;
+  margin-top: 20px;
+  position: relative;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+  cursor: pointer;
+  text-decoration: none;
+  gap: 10px;
+}
+
+.other-actions .action .icon-container {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.other-actions .action .icon-container svg {
+  width: 30px;
+  height: 30px;
+  fill: rgb(20 184 166)
+}
+.other-actions .action:hover {
+  transform: translateY(-5px);
+}
+
+.other-actions .action div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  text-align: left;
+}
+
+.other-actions .action h3 {
+  font-size: 1.2rem;
+  margin-bottom: 2px;
+  font-weight: 600;
+}
+.other-actions .action p {
+  text-align: left;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  color: #555;
+}

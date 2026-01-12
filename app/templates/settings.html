@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        .settings-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            padding: 2rem 2.5rem;
+            max-width: 420px;
+            margin: 2rem auto;
+        }
+        .settings-card h2 {
+            margin-bottom: 1.5rem;
+        }
+        .settings-card label {
+            display: block;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+        .settings-card select, .settings-card input[type=checkbox] {
+            margin-left: 0.5rem;
+        }
+        .settings-card button {
+            margin-top: 1.5rem;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 0.7rem 2rem;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        #settings-message {
+            margin-top: 1rem;
+            color: #28a745;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <navbar>
+        <div class="logo">Interview Platform</div>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/interview">Interview</a>
+            <a href="/history">History</a>
+            <a href="/settings">Settings</a>
+        </div>
+    </navbar>
+    <div class="settings-card">
+        <h2>Settings</h2>
+        <form id="settings-form">
+            <label>Interview Language:
+                <select name="language">
+                    <option value="en">English</option>
+                    <option value="hi">Hindi</option>
+                </select>
+            </label>
+            <label>Enable Voice Feedback:
+                <input type="checkbox" name="voice_feedback" checked>
+            </label>
+            <button type="submit">Save Settings</button>
+        </form>
+        <div id="settings-message"></div>
+    </div>
+    <script>
+    document.getElementById('settings-form').onsubmit = function(e){
+      e.preventDefault();
+      document.getElementById('settings-message').textContent = 'Settings saved! (Not persisted in demo)';
+    };
+    </script>
+</body>
+</html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MockStar - Take Interview</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        .interview-container {
+            display: flex;
+            height: 90vh;
+            gap: 2rem;
+            padding: 2rem;
+        }
+        .camera-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #f7f7f7;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            padding: 2rem 1rem;
+        }
+        .camera-preview {
+            width: 100%;
+            max-width: 350px;
+            aspect-ratio: 4/3;
+            background: #222;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+        .toggle-btn {
+            margin-bottom: 1rem;
+            padding: 0.5rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            background: #007bff;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        .end-btn {
+            background: #dc3545;
+            color: #fff;
+        }
+        .question-section {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            padding: 2rem 2rem 1rem 2rem;
+        }
+        .question-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+        .answer-box {
+            width: 100%;
+            min-height: 100px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1rem;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            resize: vertical;
+        }
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .timer {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 1rem;
+        }
+        .feedback-panel {
+            margin-top: 2rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+        }
+        .feedback-panel div {
+            margin-bottom: 0.5rem;
+        }
+        .feedback-panel b {
+            color: #007bff;
+        }
+        /* Chat box styles */
+        .chat-box {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: #fff;
+            border-top: 1px solid #ddd;
+            padding: 0.5rem 2rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+        .chat-box input {
+            width: 90%;
+            padding: 0.5rem;
+            font-size: 1rem;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="interview-container">
+        <!-- Camera Section -->
+        <div class="camera-section">
+            <video id="camera" class="camera-preview" autoplay playsinline></video>
+            <button class="toggle-btn" id="toggleCamera">Turn Camera Off</button>
+            <div style="margin-top: 1rem; color: #888; font-size: 0.95rem;">Camera Preview</div>
+        </div>
+        <!-- Question & Answer Section -->
+        <div class="question-section">
+            <div class="timer" id="timer">Time: <span id="timerValue">00:00</span></div>
+            <div class="question-title" id="questionText">{{ interview['questions'][0] if interview['questions'] else 'No question loaded.' }}</div>
+            <textarea class="answer-box" id="answerBox" placeholder="Type your answer here or start speaking..."></textarea>
+            <div class="controls">
+                <button class="toggle-btn end-btn" id="endBtn">End Interview</button>
+                <button class="toggle-btn" style="background:#6c757d;" id="prevBtn">Previous</button>
+                <button class="toggle-btn" style="background:#28a745;" id="nextBtn">Next</button>
+                <button class="toggle-btn" style="background:#ffc107; color:#222;" id="submitBtn">Submit</button>
+                <!-- Repeat Question button will be added by script -->
+            </div>
+            <!-- Live Feedback Panel -->
+            <div class="feedback-panel" id="feedbackPanel">
+                <div id="liveFeedback"><b>Live Feedback:</b> <span id="liveFeedbackText">Analyzing posture, gestures, and movement...</span></div>
+                <div><b>Posture:</b> Upright</div>
+                <div><b>Gestures:</b> No gestures are visible in the provided image.</div>
+                <div><b>Movement:</b> Processing</div>
+                <div><b>Overall Impression:</b> The candidate presents a neutral and composed demeanor. The posture is upright and eye contact is good. The lack of visible movement and gestures might suggest a need to incorporate more dynamic communication.</div>
+                <div><b>Suggestions for Improvement:</b> Practice incorporating more visible gestures to help convey enthusiasm and engagement. During the interview, try to vary your facial expressions to make the interview more engaging.</div>
+            </div>
+        </div>
+    </div>
+    <!-- Chat Box -->
+    <div class="chat-box" id="chatBox">
+        <input id="chatInput" type="text" placeholder="Type a message...">
+        <button id="chatSend" class="toggle-btn" style="background:#007bff;color:#fff;">Send</button>
+    </div>
+    <script>
+        // Jinja variable for questions
+        const questions = {{ interview['questions']|default([])|tojson|safe }};
+        // Camera toggle logic
+        let stream = null;
+        let cameraOn = true;
+        const video = document.getElementById('camera');
+        const toggleBtn = document.getElementById('toggleCamera');
+        // Automatically speak the question on load and navigation
+        function speakCurrentQuestion() {
+            if (questions.length > 0) {
+                const utter = new window.SpeechSynthesisUtterance(questions[currentIndex]);
+                window.speechSynthesis.cancel();
+                window.speechSynthesis.speak(utter);
+            }
+        }
+        // Speak on load
+        speakCurrentQuestion();
+        document.getElementById('nextBtn').onclick = function() {
+            if (currentIndex < questions.length - 1) {
+                currentIndex++;
+                questionText.textContent = questions[currentIndex];
+                answerBox.value = '';
+                speakCurrentQuestion();
+            }
+        };
+        document.getElementById('prevBtn').onclick = function() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                questionText.textContent = questions[currentIndex];
+                answerBox.value = '';
+                speakCurrentQuestion();
+            }
+        };
+        // Add Repeat Question button
+        const repeatBtn = document.createElement('button');
+        repeatBtn.textContent = '🔁 Repeat Question';
+        repeatBtn.className = 'toggle-btn';
+        repeatBtn.style.background = '#17a2b8';
+        repeatBtn.style.color = '#fff';
+        document.querySelector('.controls').appendChild(repeatBtn);
+        repeatBtn.onclick = function() {
+            speakCurrentQuestion();
+        };
+        // Remove Speak Answer button if present
+        const micBtn = document.querySelector('.controls .toggle-btn[style*="#ffc107"]');
+        if (micBtn && micBtn.textContent.includes('Speak Answer')) {
+            micBtn.remove();
+        }
+        // Chat box functionality
+        document.getElementById('chatSend').onclick = function() {
+            const val = document.getElementById('chatInput').value;
+            if (val.trim()) {
+                alert('Message sent: ' + val); // Replace with real chat logic if needed
+                document.getElementById('chatInput').value = '';
+            }
+        };
+        // Timer logic
+        let seconds = 0;
+        setInterval(() => {
+            seconds++;
+            const min = String(Math.floor(seconds/60)).padStart(2,'0');
+            const sec = String(seconds%60).padStart(2,'0');
+            document.getElementById('timerValue').textContent = `${min}:${sec}`;
+        }, 1000);
+        // Interview auto-end when last question is answered
+        document.getElementById('submitBtn').onclick = function() {
+            if (currentIndex === questions.length - 1) {
+                setTimeout(() => {
+                    alert('Interview complete!');
+                    window.location.href = '/';
+                }, 500);
+            } else {
+                alert('Your answer has been submitted!');
+            }
+        };
+        document.getElementById('endBtn').onclick = function() {
+            if (confirm('Are you sure you want to end the interview?')) {
+                window.location.href = '/';
+            }
+        };
+        // Add voice-to-text (speech recognition) for answer box
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let recognition;
+        if (SpeechRecognition) {
+            recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.lang = 'en-US';
+            // Start recognition when answer box is focused
+            answerBox.addEventListener('focus', () => {
+                recognition.start();
+            });
+            // Stop recognition when answer box is blurred
+            answerBox.addEventListener('blur', () => {
+                recognition.stop();
+            });
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript;
+                answerBox.value = transcript;
+            };
+            recognition.onerror = function(event) {
+                // Optionally handle errors
+            };
+        }
+    </script>
+</body>
+</html>
