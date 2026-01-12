@@ -1,0 +1,10 @@
+{
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "html.validate.scripts": false,
+  "javascript.validate.enable": false,
+  "editor.quickSuggestions": {
+    "other": false
+  }
+}

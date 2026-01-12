@@ -150,7 +150,13 @@
     </div>
     <script>
         // Jinja variable for questions
+        // @ts-ignore
         const questions = {{ interview['questions']|default([])|tojson|safe }};
+        // eslint-disable-next-line no-undef
+        // Variables for question tracking
+        let currentIndex = 0;
+        const questionText = document.getElementById('questionText');
+        const answerBox = document.getElementById('answerBox');
         // Camera toggle logic
         let stream = null;
         let cameraOn = true;
